@@ -1,0 +1,80 @@
+﻿<Window x:Class="BasicTodoList.View.TodoMainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BasicTodoList.View" 
+        xmlns:viewmodel="clr-namespace:BasicTodoList.ViewModel" 
+        d:DataContext="{d:DesignInstance Type=viewmodel:TodoMainViewModel}"
+        mc:Ignorable="d"
+        Title="TodoMainView" Height="500" Width="450">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0"
+                     Text="{Binding TaskTextBox}"/>
+            <Button Grid.Column="1"
+                    Command="{Binding AddTaskCommand}"
+                    FontSize="25"
+                    FontWeight="SemiBold"
+                    Content="Add"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Command="{Binding CompletedTaskCommand}"
+                    Content="Done"/>
+            <Button Grid.Column="1"
+                    Command="{Binding DeleteTaskCommand}"
+                    Content="Delete "/>
+        </Grid>
+
+        <ListBox Grid.Row="2"
+                 ItemsSource="{Binding TaskList}"
+                 SelectedItem="{Binding SelectedTask}"
+                 >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <DockPanel.Style>
+                            <Style TargetType="DockPanel">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsCompleted}"
+                                     Value="True">
+                                        <Setter Property="Background" Value="Green"/>
+                                    </DataTrigger>                      
+                                    <DataTrigger Binding="{Binding IsCompleted}"
+                                     Value="False">
+                                        <Setter Property="Background" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DockPanel.Style>
+
+                        <Label Content="Task: " 
+                               FontSize="20"
+                               Foreground="White"
+                               FontWeight="SemiBold"/>
+                        <Label DockPanel.Dock="Right" 
+                               Content="{Binding Text}"
+                               Foreground="White"
+                               FontSize="20"/>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
